@@ -23,8 +23,13 @@ public class HelloServlet extends HttpServlet{
 		}
 		// 응답 출력을 위한 Writer
 		PrintWriter out = resp.getWriter();
+		// HTML 코드를 브라우저로 반환하기 위해서 서블릿은 out객체의 println 메서드를 이용
+		// -> 이는 HTML 코드를 작성하기 어렵게 만드는 요소가 된다
 		out.println("<h3>Hello Servlet</h3>");
 		out.println("<p>Welcome, " + name + "</p>");
+		
+		// 웹페이지를 구성하는 화면은(HTML) -> JSP로 작성
+		// 로직 및 프로세스를 처리하는 부분 -> 서블릿이 처리
 
 	}
 

@@ -25,7 +25,7 @@ public class EncodingFilter implements Filter {
 		// 요청과 응답에 필터 적용
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("text/html;charset=UTF-8");
-		// 다음 연결된 필터로 요청과 응답 전달
+		// 다음 연결된 필터로 요청과 응답 전달 -> 필터 다 적용하면 서비스 실행
 		chain.doFilter(req, resp);
 		
 		System.out.println("EncodingFilter::doChain End");

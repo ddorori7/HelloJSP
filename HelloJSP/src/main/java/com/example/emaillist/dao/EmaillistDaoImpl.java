@@ -2,6 +2,7 @@ package com.example.emaillist.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -12,28 +13,27 @@ import java.util.List;
 import com.example.emaillist.vo.EmailVo;
 
 public class EmaillistDaoImpl implements EmaillistDao {
-
 	private Connection getConnection() throws SQLException {
 		Connection conn = null;
 
 		try {
 			// 드라이버 로드
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-
 			// Connection 가져오기
 			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", // DBURL
 					"C##BITUSER", // DB User
-					"bituser"); // DB Password
+					"bituser"); // DB Pass
 		} catch (ClassNotFoundException e) {
 			System.err.println("드라이버 로드 실패!");
 			e.printStackTrace();
 		}
+
 		return conn;
 	}
 
 	@Override
 	public List<EmailVo> getList() {
-		List<EmailVo> list = new ArrayList<EmailVo>();
+		List<EmailVo> list = new ArrayList<>();
 
 		Connection conn = null;
 		Statement stmt = null;
@@ -67,12 +67,10 @@ public class EmaillistDaoImpl implements EmaillistDao {
 				// 리스트에 추가
 				list.add(vo);
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
-
 		} finally {
-			// 자원정리
+			// 자원 정리
 			try {
 				rs.close();
 				stmt.close();
@@ -86,14 +84,65 @@ public class EmaillistDaoImpl implements EmaillistDao {
 
 	@Override
 	public int insert(EmailVo vo) {
-		// TODO Auto-generated method stub
-		return 0;
+		int count = 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = getConnection();
+			
+			//	실행 계획
+			String sql = "INSERT INTO emaillist " +
+					"(no, last_name, first_name, email) " +
+					" VALUES(seq_emaillist_pk.NEXTVAL, ?, ?, ?)";
+			pstmt = conn.prepareStatement(sql);
+			//	파라미터 바인딩
+			pstmt.setString(1, vo.getLastName());
+			pstmt.setString(2, vo.getFirstName());
+			pstmt.setString(3, vo.getEmail());
+			
+			//	쿼리 수행
+			count = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				pstmt.close();
+				conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return count;
 	}
 
 	@Override
 	public int delete(Long pk) {
-		// TODO Auto-generated method stub
-		return 0;
+		int deletedCount = 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = getConnection();
+			
+			String sql = "DELETE FROM emaillist WHERE no = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setLong(1, pk);
+			
+			//	쿼리 수행
+			deletedCount = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				pstmt.close();
+				conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return deletedCount;
 	}
 
 }

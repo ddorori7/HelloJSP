@@ -12,7 +12,8 @@
 	<p>이것은 지원이가 작성한 첫번째 HTML 입니다.</p>
 	
 	<ul>
-		<li><a href="<%= request.getContextPath() %>/users?a=joinform">회원가입</a></li>
+		<!-- ?a=블라블라 -> 파라미터 값 주는것 -->
+		<li><a href="<%= request.getContextPath() %>/users?a=joinform">회원가입</a></li> 
 		<li><a href="<%= request.getContextPath() %>/users?a=loginform">로그인</a></li>
 	</ul>
 	

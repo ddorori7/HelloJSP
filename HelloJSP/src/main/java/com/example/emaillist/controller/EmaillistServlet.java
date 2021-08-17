@@ -19,7 +19,10 @@ import com.example.emaillist.vo.EmailVo;
 public class EmaillistServlet extends HttpServlet {
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
+			throws ServletException, IOException {
+		// doGet 메서드를 Override 하여 form페이지가 필요한 상황일 때 form.jsp로 포워드!
+		
 		// 파라미터 확인
 		// a=form이면 가입폼으로 FORWARD
 		String actionName = req.getParameter("a");
@@ -27,7 +30,7 @@ public class EmaillistServlet extends HttpServlet {
 		if ("form".equals(actionName)) {
 			// a=form이면
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/WEB-INF/views/emaillist/form.jsp");
-			// 전달
+			// form.jsp 로 전달
 			rd.forward(req, resp);
 		} else {
 			// DAO에서 목록을 받아서 jsp로 전달
@@ -50,8 +53,12 @@ public class EmaillistServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String actionName = req.getParameter("a");
 
-		if ("add".equals(actionName)) { // a=add
+		if ("add".equals(actionName)) { // a = add
 
+//로그인 폼에, ID를 입력하는 <input type="text" name="id">가 있었다면,
+//서블릿에서 String strId = request.getParameter("id"); 와 같은 방식으로,
+//클라이언트가 입력한 ID가 뭐였는지 알아낼 수 있습니다.
+			
 			String firstName = req.getParameter("first_name");
 			String lastName = req.getParameter("last_name");
 			String email = req.getParameter("email");

@@ -1,4 +1,4 @@
-package com.example.emaillist.dao;
+ package com.example.emaillist.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
